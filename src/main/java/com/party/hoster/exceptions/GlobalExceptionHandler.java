@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.party.hoster.payloads.ApiResponse;
 //import com.party.hoster.exceptions.ResourceNotFoundException;
+//test
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
