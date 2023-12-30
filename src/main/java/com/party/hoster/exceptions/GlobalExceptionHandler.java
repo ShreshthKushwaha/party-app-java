@@ -1,8 +1,12 @@
 package com.party.hoster.exceptions;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 //import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 //import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -10,7 +14,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.party.hoster.payloads.ApiResponse;
 //import com.party.hoster.exceptions.ResourceNotFoundException;
-//test
+
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -26,5 +30,16 @@ public class GlobalExceptionHandler {
 		
 		
 	}
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<Map<String, String>> methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException ex){
+		Map <String,String> resp = new HashMap<>();
+		ex.getBindingResult().getFieldErrors().forEach(error -> {
+            resp.put(error.getField(), error.getDefaultMessage());
+        });
+		return new ResponseEntity<Map<String,String>>(resp,HttpStatus.BAD_REQUEST);
+		
+	}
+	
+	
 
 }
