@@ -1,7 +1,9 @@
 package com.party.hoster.entities;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +11,11 @@ import lombok.Setter;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -41,6 +47,7 @@ public class User {
 	private LocalDate dateOfBirth; // Using LocalDate for date of birth
 	
 	private String zip;
-	
+	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	private List<Party> parties = new ArrayList<>();
 
 }
