@@ -18,7 +18,7 @@ public interface PartyService {
 	void deleteParty(Integer partyId);
 	
 	//get all parties
-	List<Party> getAllParty();
+	List<PartyDto> getAllParty();
 	
 	
 	//get single party
@@ -26,7 +26,7 @@ public interface PartyService {
 	
 	//get parties by user
 	
-	List<Party> getPartiesByUser(Integer userId);
+	List<PartyDto> getPartiesByUser(Integer userId);
 	
 	//search parties
 	List<Party> searchParties(String keyword);

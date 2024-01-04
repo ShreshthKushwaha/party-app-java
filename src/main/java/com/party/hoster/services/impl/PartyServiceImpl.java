@@ -2,6 +2,7 @@ package com.party.hoster.services.impl;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,25 +57,48 @@ public class PartyServiceImpl implements PartyService {
 	@Override
 	public void deleteParty(Integer partyId) {
 		// TODO Auto-generated method stub
+		Party party = partyRepo.findById(partyId)
+                .orElseThrow(() -> new ResourceNotFoundException("Party", "partyId", partyId));
+		partyRepo.delete(party);
 
 	}
 
 	@Override
-	public List<Party> getAllParty() {
+	public List<PartyDto> getAllParty() {
+		List<Party> parties = partyRepo.findAll();
+
+        // Convert Party entities to PartyDto using ModelMapper
+        return parties.stream()
+                .map(party -> modelMapper.map(party, PartyDto.class))
+                .collect(Collectors.toList());
 		// TODO Auto-generated method stub
-		return null;
+		
 	}
 
 	@Override
 	public PartyDto getPartyById(Integer partyId) {
 		// TODO Auto-generated method stub
-		return null;
+		Party party = partyRepo.findById(partyId)
+                .orElseThrow(() -> new ResourceNotFoundException("Party", "partyId", partyId));
+
+        // Convert Party entity to PartyDto using ModelMapper
+        return modelMapper.map(party, PartyDto.class);
 	}
 
 	@Override
-	public List<Party> getPartiesByUser(Integer userId) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<PartyDto> getPartiesByUser(Integer userId) {
+		// Retrieve the user from the repository
+	    User user = userRepo.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "user id", userId));
+
+	    // Retrieve parties associated with the user
+	    List<Party> parties = partyRepo.findByUser(user);
+
+	    // Convert Party entities to PartyDto objects
+	    List<PartyDto> partyDtos = parties.stream()
+	            .map(party -> modelMapper.map(party, PartyDto.class))
+	            .collect(Collectors.toList());
+
+	    return partyDtos;
 	}
 
 	@Override
