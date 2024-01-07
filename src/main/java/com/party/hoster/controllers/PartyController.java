@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,6 +36,16 @@ public class PartyController {
 		return new ResponseEntity<PartyDto>(createdParty,HttpStatus.CREATED);
 	}
 	//getting parties by user
+	
+	// Update an existing party
+    @PutMapping("/parties/{partyId}")
+    public ResponseEntity<PartyDto> updateParty(
+            @RequestBody PartyDto partyDto,
+            @PathVariable Integer partyId
+    ) {
+        PartyDto updatedParty = partyService.updateParty(partyDto, partyId);
+        return new ResponseEntity<>(updatedParty, HttpStatus.OK);
+    }
 	
 	@GetMapping("/users/{userId}/parties")
     public ResponseEntity<List<PartyDto>> getPartiesByUser(@PathVariable Integer userId) {

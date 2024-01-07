@@ -51,7 +51,22 @@ public class PartyServiceImpl implements PartyService {
 	@Override
 	public PartyDto updateParty(PartyDto partyDto, Integer partyId) {
 		// TODO Auto-generated method stub
-		return null;
+		Party existingParty = partyRepo.findById(partyId)
+                .orElseThrow(() -> new ResourceNotFoundException("Party", "partyId", partyId));
+
+        // Update properties
+        existingParty.setTitle(partyDto.getTitle());
+        existingParty.setAddress(partyDto.getAddress());
+        existingParty.setZip(partyDto.getZip());
+        existingParty.setPartyDate(partyDto.getPartyDate());
+        existingParty.setStartTime(partyDto.getStartTime());
+        existingParty.setEndTime(partyDto.getEndTime());
+        existingParty.setDescription(partyDto.getDescription());
+
+        // Save the updated party
+        Party updatedParty = partyRepo.save(existingParty);
+
+        return modelMapper.map(updatedParty, PartyDto.class);
 	}
 
 	@Override
