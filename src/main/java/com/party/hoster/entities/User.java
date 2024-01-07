@@ -49,5 +49,7 @@ public class User {
 	private String zip;
 	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	private List<Party> parties = new ArrayList<>();
+	@OneToMany(mappedBy = "user")
+	private List<Invitation> invitations = new ArrayList<>();
 
 }

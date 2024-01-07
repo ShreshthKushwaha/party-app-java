@@ -1,50 +1,50 @@
 package com.party.hoster.entities;
 
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.Column;
+import com.party.hoster.enums.InvitationStatus;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 @Entity
-@Table(name="parties")
+@Table(name="invitations")
 @Getter
 @Setter
 @NoArgsConstructor
-public class Party {
+
+public class Invitation {
+	
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer partyId;
+    private Integer id;
+
+    @ManyToOne
+    @JoinColumn(name = "party_id")
+    private Party party;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    private String title;
-    private String address;
-    private String zip;
-    private LocalDateTime postedDate;
-    private LocalDate partyDate;
-    private LocalTime startTime;
-    private LocalTime endTime;
-    @Column(length =10000)
-    private String description;
-    @OneToMany(mappedBy = "party")
-    private List<Invitation> invitations = new ArrayList<>();
-	
+    @Enumerated(EnumType.STRING)
+    private InvitationStatus status;  // Enumeration for status (PENDING, ACCEPTED, REJECTED, etc.)
 
+    private LocalDateTime postedDate;
+
+	
 }
