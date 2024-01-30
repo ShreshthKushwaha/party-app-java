@@ -23,6 +23,8 @@ public class InvitationDto {
 
 	    private InvitationStatus status;
 	    
+	    private PartyDto party;
+	    
 	    
 
 }

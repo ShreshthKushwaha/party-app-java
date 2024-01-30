@@ -2,7 +2,9 @@ package com.party.hoster.services.impl;
 
 
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.List;
+//import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,8 @@ public class InvitationServiceImpl implements InvitationService {
 
     @Autowired
     private PartyRepo partyRepo;
+    
+    
 
     @Autowired
     private UserRepo userRepo;
@@ -63,13 +67,38 @@ public class InvitationServiceImpl implements InvitationService {
 	@Override
 	public InvitationDto acceptInvitation(Integer invitationId) {
 		// TODO Auto-generated method stub
-		return null;
+		//return null;
+		
+		Invitation invitation = invitationRepo.findById(invitationId)
+                .orElseThrow(() -> new ResourceNotFoundException("Invitation", "invitationId", invitationId));
+
+        invitation.setStatus(InvitationStatus.ACCEPTED); // Update invitation status to accepted
+        Invitation updatedInvitation = invitationRepo.save(invitation);
+
+        return this.modelMapper.map(updatedInvitation, InvitationDto.class);
 	}
 
 	@Override
 	public void rejectInvitation(Integer invitationId) {
 		// TODO Auto-generated method stub
+		Invitation invitation = invitationRepo.findById(invitationId)
+                .orElseThrow(() -> new ResourceNotFoundException("Invitation", "invitationId", invitationId));
 
+        invitation.setStatus(InvitationStatus.REJECTED); // Update invitation status to rejected
+        invitationRepo.save(invitation);
+
+	}
+	
+	@Override
+	public List<InvitationDto> getInvitationsByParty(Integer partyId) {
+	    Party party = partyRepo.findById(partyId)
+	            .orElseThrow(() -> new ResourceNotFoundException("Party", "partyId", partyId));
+
+	    List<Invitation> invitations =invitationRepo.findAllByParty(party);
+
+	    return invitations.stream()
+	            .map(invitation -> modelMapper.map(invitation, InvitationDto.class))
+	            .collect(Collectors.toList());
 	}
 
 }
