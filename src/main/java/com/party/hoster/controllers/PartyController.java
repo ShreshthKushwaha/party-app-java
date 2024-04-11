@@ -66,16 +66,20 @@ public class PartyController {
 	        List<PartyDto> partyDtos = partyService.getAllParty();
 	        return ResponseEntity.ok(partyDtos);
 	    }
-	 //deleting a party
 	 @DeleteMapping("/parties/{partyId}")
-	    public ResponseEntity<ApiResponse> deleteParty(@PathVariable Integer partyId) {
-	        try {
-	            partyService.deleteParty(partyId);
-	            return new ResponseEntity<ApiResponse>(new ApiResponse("Party deleted successfully!",true),HttpStatus.OK);
-		        
-	        } catch (ResourceNotFoundException ex) {
-	        	return new ResponseEntity<ApiResponse>(new ApiResponse("INVALID PARTY ID!",false),HttpStatus.NOT_FOUND);
-	        }
-	    }
+	 public ResponseEntity<ApiResponse> deleteParty(@PathVariable Integer partyId) {
+	     try {
+	         // Retrieve the party to be "deleted" from the service
+	         partyService.deleteParty(partyId);
+	         
+	        // if (deletedParty != null) {
+	            return new ResponseEntity<>(new ApiResponse("Party marked as inactive successfully!", true), HttpStatus.OK);
+	        // } else {
+	          //   return new ResponseEntity<>(new ApiResponse("Party not found!", false), HttpStatus.NOT_FOUND);
+	        // }
+	     } catch (ResourceNotFoundException ex) {
+	         return new ResponseEntity<>(new ApiResponse("INVALID PARTY ID!", false), HttpStatus.NOT_FOUND);
+	     }
+	 }
 
 }

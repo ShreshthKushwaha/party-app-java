@@ -40,7 +40,8 @@ public class PartyDto {
 
     @NotNull
     private LocalTime endTime;
-
+   
+    private boolean is_active;
     
     private String description;
     

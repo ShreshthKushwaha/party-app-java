@@ -33,7 +33,7 @@ public class Party {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-
+    
     private String title;
     private String address;
     private String zip;
@@ -41,6 +41,7 @@ public class Party {
     private LocalDate partyDate;
     private LocalTime startTime;
     private LocalTime endTime;
+    private boolean is_active=true;
     @Column(length =10000)
     private String description;
     @OneToMany(mappedBy = "party")

@@ -47,6 +47,7 @@ public class User {
 	private LocalDate dateOfBirth; // Using LocalDate for date of birth
 	
 	private String zip;
+	//lazy for loading only when accessed 
 	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	private List<Party> parties = new ArrayList<>();
 	@OneToMany(mappedBy = "user")

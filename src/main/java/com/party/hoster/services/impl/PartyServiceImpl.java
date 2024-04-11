@@ -42,6 +42,7 @@ public class PartyServiceImpl implements PartyService {
 		//we can set image also here
 		party.setUser(user);
 		party.setPostedDate(LocalDateTime.now());
+		party.set_active(true);
 		
 		Party savedParty = this.partyRepo.save(party);
 		
@@ -70,13 +71,12 @@ public class PartyServiceImpl implements PartyService {
 	}
 
 	@Override
-	public void deleteParty(Integer partyId) {
-		// TODO Auto-generated method stub
-		Party party = partyRepo.findById(partyId)
+    public void deleteParty(Integer partyId) {
+        Party party = partyRepo.findById(partyId)
                 .orElseThrow(() -> new ResourceNotFoundException("Party", "partyId", partyId));
-		partyRepo.delete(party);
-
-	}
+        party.set_active(false); // Mark the party as inactive
+        partyRepo.save(party); // Save the updated party
+    }
 
 	@Override
 	public List<PartyDto> getAllParty() {
